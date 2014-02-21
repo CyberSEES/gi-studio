@@ -10,6 +10,7 @@
 		<link href="css/types.css" rel="stylesheet" />
 		<link id="theme" href="css/light.css" rel="stylesheet" />
 
+		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
 
 		<script src="../build/three.min.js"></script>
@@ -77,6 +78,10 @@
 		<script src="js/Toolbar.js"></script>
 		<script src="js/Viewport.js"></script>
 
+		<!-- Panorama stuff -->
+		<script src="js/GSVPano.min.js"></script>
+		<script src="js/Rhessys.js"></script>
+
 		<script>
 
 			window.URL = window.URL || window.webkitURL;
@@ -109,7 +114,20 @@
 						var loader = new THREE.ObjectLoader();
 						var scene = loader.parse( state );
 
+						var pano = scene.getObjectByName( "panorama", false );
+						scene.remove( pano );
+
+						loadPanorama();
+
 						editor.setScene( scene );
+
+					} else {
+
+						//setFloorHeight( 100 );
+						//createLightAtPos( 50, 150, 300 );
+						//createTreeAtPos( 50, 0, 300 );
+						//createGround();
+						loadPanorama();
 
 					}
 
