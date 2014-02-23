@@ -18,13 +18,21 @@ Sidebar.Location = function ( editor ) {
 
             var callback = function( obj3d ) {
 
-                editor.addObject( obj3d.scene );
-                editor.select( obj3d.scene );
+                var tree = obj3d.scene.children[0];
+                tree.name = "tree";
+                tree.position.set(50,-100,250);
+                tree.castShadow = true;
+                tree.receiveShadow = true;
 
+
+                editor.addObject(tree);// obj3d.scene );
+                editor.select(tree);// obj3d.scene );
             }
     
             var mloader = new THREE.ColladaLoader();
             mloader.load("media/river_birch.DAE", callback); // FIXME
+
+            createTreeAtPos(80,-100,250);
 
         } );
 
