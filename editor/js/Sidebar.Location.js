@@ -18,8 +18,10 @@ Sidebar.Location = function ( editor ) {
 
             var callback = function( obj3d ) {
 
+                console.log(obj3d);
+
                 var tree = obj3d.scene.children[0];
-                tree.name = "tree";
+                //tree.name = "tree";
                 tree.position.set(50,-100,250);
                 tree.castShadow = true;
                 tree.receiveShadow = true;
@@ -32,7 +34,6 @@ Sidebar.Location = function ( editor ) {
             var mloader = new THREE.ColladaLoader();
             mloader.load("media/river_birch.DAE", callback); // FIXME
 
-            createTreeAtPos(80,-100,250);
 
         } );
 

@@ -254,9 +254,29 @@ Editor.prototype = {
 
 	//
 
+	//Simplify by reducing selectable objects for RHESSys users
+	unselectable: function ( object ) {
+		if(object == null)return false;
+
+		if(object.name == "ground" || object.name == "panorama" ){
+			return true;
+		}
+
+		return false;
+
+	},
+
+	//
+
 	select: function ( object ) {
 
-		this.selected = object;
+		if(this.unselectable( object ) ){
+
+			this.deselect();
+			return;
+
+		}
+
 
 		if ( object !== null ) {
 
@@ -267,6 +287,8 @@ Editor.prototype = {
 			this.config.setKey( 'selected', null );
 
 		}
+
+		this.selected = object;
 
 		this.signals.objectSelected.dispatch( object );
 
