@@ -71,15 +71,13 @@ function createLightAtPos( x, y, z ) {
     var dlight = new THREE.SpotLight( 0xffffff );
     dlight.position.set( x, y, z );        
     
+    
     dlight.castShadow = true;
     dlight.shadowDarkness = 0.5;
     //dlight.shadowCameraVisible = true;
-
+    
     dlight.target.name = "lightTarget";
-    dlight.add( dlight.target );
-    dlight.target.position.set( 0, -10, 0 );
-    //dlight.perspe
-    //console.log(dlight.children);//.name = "shadowCamera";
+    dlight.target.position.set( x, y-10, z );
 
     dlight.name = "light";
     dlight.intensity = 7;

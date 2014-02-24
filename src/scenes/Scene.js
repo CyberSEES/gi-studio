@@ -33,7 +33,12 @@ THREE.Scene.prototype.__addObject = function ( object ) {
 
 		if ( object.target && object.target.parent === undefined ) {
 
-			this.add( object.target );
+			if(!object.targetUuid){
+
+				this.add( object.target );
+				object.targetUuid = object.target.uuid;
+
+			}
 
 		}
 
