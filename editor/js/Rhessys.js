@@ -112,7 +112,7 @@ function loadPanorama() {
     var mesh = new THREE.Mesh(
         new THREE.SphereGeometry( 500, 60, 40 ), 
         new THREE.MeshBasicMaterial( { 
-            map: THREE.ImageUtils.loadTexture( './../../streetview-studio/search.png' ) 
+            map: THREE.ImageUtils.loadTexture( './../../streetview-studio/search.png' ) // FIXME
         } ) 
     );
     var loader = new GSVPANO.PanoLoader();
