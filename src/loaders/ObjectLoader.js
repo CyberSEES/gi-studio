@@ -281,6 +281,8 @@ THREE.ObjectLoader.prototype = {
 
 					}
 
+					object.castShadow = data.castShadow;
+
 					break;
 
 				case 'PointLight':
@@ -298,6 +300,8 @@ THREE.ObjectLoader.prototype = {
 							object.targetUuid = data.targetUuid;
 
 					}
+
+					object.castShadow = data.castShadow;
 					
 					break;
 
@@ -325,6 +329,13 @@ THREE.ObjectLoader.prototype = {
 					}
 
 					object = new THREE.Mesh( geometry, material );
+
+					
+					object.castShadow = data.castShadow;
+                	object.receiveShadow = data.receiveShadow;
+
+                	// console.log(object.receiveShadow);
+                	// console.log(object.castShadow);
 
 					break;
 
@@ -376,6 +387,8 @@ THREE.ObjectLoader.prototype = {
 				}
 
 			}
+
+			console.log(object);
 
 			return object;
 

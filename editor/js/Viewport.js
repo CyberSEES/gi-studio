@@ -30,6 +30,7 @@ var Viewport = function ( editor ) {
 	camera.position.fromArray( editor.config.getKey( 'camera' ).position );
 	camera.lookAt( new THREE.Vector3().fromArray( editor.config.getKey( 'camera' ).target ) );
 
+
 	//
 
 	var selectionBox = new THREE.BoxHelper();
@@ -228,6 +229,7 @@ var Viewport = function ( editor ) {
 		renderer.autoUpdateScene = false;
 		renderer.setClearColor( clearColor );
 		renderer.setSize( container.dom.offsetWidth, container.dom.offsetHeight );
+		renderer.shadowMapEnabled = true;
 
 		container.dom.appendChild( renderer.domElement );
 

@@ -27,6 +27,8 @@ THREE.EditorControls = function ( object, domElement ) {
 	var pointer = new THREE.Vector2();
 	var pointerOld = new THREE.Vector2();
 
+	var target = new THREE.Vector3(50,0,200);
+
 	// events
 
 	var changeEvent = { type: 'change' };
@@ -81,7 +83,7 @@ THREE.EditorControls = function ( object, domElement ) {
 
 	this.rotate = function ( delta ) {
 
-		vector.copy( object.position ).sub( center );
+		vector.copy(target);
 
 		var theta = Math.atan2( vector.x, vector.z );
 		var phi = Math.atan2( Math.sqrt( vector.x * vector.x + vector.z * vector.z ), vector.y );
@@ -99,9 +101,10 @@ THREE.EditorControls = function ( object, domElement ) {
 		vector.y = radius * Math.cos( phi );
 		vector.z = radius * Math.sin( phi ) * Math.cos( theta );
 
-		object.position.copy( center ).add( vector );
+		//object.position.copy( center ).add( vector );
+		target = vector;
 
-		object.lookAt( center );
+		object.lookAt( target);
 
 		scope.dispatchEvent( changeEvent );
 
