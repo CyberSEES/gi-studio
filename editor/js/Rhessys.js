@@ -9,7 +9,7 @@ function createGround() {
         new THREE.MeshLambertMaterial( {
             emissive: 'white', 
             transparent: true, 
-            opacity: 0.5
+            opacity: 0.0
         } )
     );
     //ground.overdraw = true;
@@ -42,9 +42,19 @@ function createLightAtPos( x, y, z ) {
     var dlight = new THREE.DirectionalLight( 0xffffff );
     dlight.position.set( x, y, z );        
     
-    
     dlight.castShadow = true;
     dlight.shadowDarkness = 0.5;
+    dlight.shadowMapWidth = 2048;
+    dlight.shadowMapHeight = 2048;
+
+    var d = 512;
+
+    dlight.shadowCameraLeft = -d;
+    dlight.shadowCameraRight = d;
+    dlight.shadowCameraTop = d;
+    dlight.shadowCameraBottom = -d;
+
+    dlight.shadowCameraFar = 1000;
     dlight.shadowCameraVisible = true;
     
     dlight.target.name = "lightTarget";
@@ -62,6 +72,34 @@ function loadTreeAtPos( x, y, z ) {
 
         console.log( obj3d );
 
+        var treeTexture = THREE.ImageUtils.loadTexture( 'media/river_birch.png' );
+
+        var uniforms = { texture:  { type: "t", value: treeTexture } };
+        
+        var fragmentShader = '' +
+            'uniform sampler2D texture;' +
+            'varying vec2 vUV;' +
+            'vec4 pack_depth( const in float depth ) {' +
+                'const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );' +
+                'const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );' +
+                'vec4 res = fract( depth * bit_shift );' +
+                'res -= res.xxyz * bit_mask;' +
+                'return res;' +
+            '}' +
+            'void main() {' +
+                'vec4 pixel = texture2D( texture, vUV );' +
+                'if ( pixel.a < 0.5 ) discard;' +
+                'gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );' +
+            '}';
+
+        var vertexShader = '' +
+            'varying vec2 vUV;' +
+            'void main() {' +
+                'vUV = 0.75 * uv;' +
+                'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );' +
+                'gl_Position = projectionMatrix * mvPosition;' +
+            '}';
+
         var tree = obj3d.scene.children[0];
         //tree.name = "tree";
         tree.position.set( x, y, z );
@@ -69,9 +107,14 @@ function loadTreeAtPos( x, y, z ) {
         tree.castShadow = true;
         tree.receiveShadow = true;
         tree.material = new THREE.MeshLambertMaterial( {
-            map: THREE.ImageUtils.loadTexture( 'media/river_birch.png' ),
+            map: treeTexture,
             transparent: true,
             side: THREE.DoubleSide
+        } );
+        tree.customDepthMaterial = new THREE.ShaderMaterial( { 
+            uniforms: uniforms, 
+            vertexShader: vertexShader, 
+            fragmentShader: fragmentShader 
         } );
 
         editor.addObject( tree );

@@ -45,7 +45,12 @@ Sidebar.Vegetation = function ( editor ) {
 
     signals.locationChanged.add( function( data ) {
 
-        veglist.setOptions( data );
+        //veglist.setOptions( data );
+        var options = [];
+        var pan1 = new UI.Panel();
+        pan1.add( new UI.Text( 'herp' ) );
+        options.push( '<img src="http://www.charleycarlat.com/PlantModels/images/River%20Birch%20Tree.jpg" />' );
+        veglist.setOptions( options );
 
     } );
 
