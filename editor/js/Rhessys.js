@@ -43,7 +43,7 @@ function createLightAtPos( x, y, z ) {
     dlight.position.set( x, y, z );        
     
     dlight.castShadow = true;
-    dlight.shadowDarkness = 0.5;
+    dlight.shadowDarkness = 0.75;
     dlight.shadowMapWidth = 2048;
     dlight.shadowMapHeight = 2048;
 
@@ -55,7 +55,7 @@ function createLightAtPos( x, y, z ) {
     dlight.shadowCameraBottom = -d;
 
     dlight.shadowCameraFar = 1000;
-    dlight.shadowCameraVisible = true;
+    //dlight.shadowCameraVisible = true;
     
     dlight.target.name = "lightTarget";
     dlight.target.position.set( 0, 0, 0 );
@@ -63,6 +63,13 @@ function createLightAtPos( x, y, z ) {
     dlight.name = "light";
     dlight.intensity = 1;
     editor.addObject( dlight );
+
+    dlight = new THREE.DirectionalLight( 0xc4df9b, 0.25 );
+    dlight.position.set( 0, -32, 0 );
+
+    editor.addObject( dlight );
+
+    editor.addObject( new THREE.AmbientLight( 0x222222 ) );
 
 }
 
