@@ -3,7 +3,7 @@ var Sidebar = function ( editor ) {
 	var container = new UI.Panel();
 
 	//container.add( new Sidebar.Renderer( editor ) );
-	//container.add( new Sidebar.Location( editor ) );
+	container.add( new Sidebar.Vegetation( editor ) );
 	//container.add( new Sidebar.Add( editor ) );
 	container.add( new Sidebar.Scene( editor ) );
 	container.add( new Sidebar.Object3D( editor ) );

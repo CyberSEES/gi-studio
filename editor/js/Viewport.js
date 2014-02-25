@@ -12,7 +12,7 @@ var Viewport = function ( editor ) {
 	info.setFontSize( '12px' );
 	info.setColor( '#ffffff' );
 	info.setValue( 'objects: 0, vertices: 0, faces: 0' );
-	container.add( info );
+	//container.add( info );
 
 	var scene = editor.scene;
 	var sceneBackground = editor.sceneBackground;

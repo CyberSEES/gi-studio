@@ -12,7 +12,7 @@ function createGround() {
             opacity: 0.5
         } )
     );
-    ground.overdraw = true;
+    //ground.overdraw = true;
     ground.receiveShadow = true;
     ground.rotation.set( 1.5 * Math.PI, 0, 0 );
     ground.position.set( 0, -64, 0 );
@@ -45,16 +45,15 @@ function createLightAtPos( x, y, z ) {
     
     dlight.castShadow = true;
     dlight.shadowDarkness = 0.5;
-    //dlight.shadowCameraVisible = true;
+    dlight.shadowCameraVisible = true;
     
     dlight.target.name = "lightTarget";
-    dlight.target.position.set( 50,-100,200 );
+    dlight.target.position.set( 0, 0, 0 );
 
     dlight.name = "light";
-    dlight.intensity = 7;
-    editor.addObject(dlight);
+    dlight.intensity = 1;
+    editor.addObject( dlight );
 
-    //editor.addObject(dlight.target);
 }
 
 function loadTreeAtPos( x, y, z ) {
@@ -65,12 +64,14 @@ function loadTreeAtPos( x, y, z ) {
 
         var tree = obj3d.scene.children[0];
         //tree.name = "tree";
-        tree.position.set( 50, -64, 250 );
+        tree.position.set( x, y, z );
+        tree.scale.set( 1.5, 1.5, 1.5 );
         tree.castShadow = true;
         tree.receiveShadow = true;
         tree.material = new THREE.MeshLambertMaterial( {
             map: THREE.ImageUtils.loadTexture( 'media/river_birch.png' ),
-            transparent: true
+            transparent: true,
+            side: THREE.DoubleSide
         } );
 
         editor.addObject( tree );
@@ -85,40 +86,17 @@ function loadTreeAtPos( x, y, z ) {
 function loadPanorama() {
 
     var mesh = new THREE.Mesh(
-        new THREE.SphereGeometry( 500, 60, 40 ), 
-        new THREE.MeshBasicMaterial( { 
-            map: THREE.ImageUtils.loadTexture( './../../streetview-studio/search.png' ) // FIXME
-        } ) 
+        new THREE.SphereGeometry( 512, 32, 32 ), 
+        new THREE.MeshBasicMaterial( {
+            map: new THREE.Texture()
+        } )
     );
     var loader = new GSVPANO.PanoLoader();
 
     // create the spherical background mesh before we attach the panorama to it 
-    //mesh.position.set( 0, editor.config.getKey( "floorh" ), 0 );
     mesh.position.set( 0, 0, 0 );
     mesh.name = "panorama";
     editor.sceneBackground.add( mesh );
-    //editor.addObject( mesh );
-    //editor.select( mesh );
-
-    function getLatLng() {
-        //choose one of these locations
-        var locations = [
-            { lat: 39.29533, lng: -76.74360 }
-            // { lat: 51.50700703827454, lng: -0.12791916931155356 },
-            // { lat: 32.6144404, lng: -108.9852017 },
-            // { lat: 39.36382677360614, lng: 8.431220278759724 },
-            // { lat: 59.30571937680209, lng: 4.879402148657164 },
-            // { lat: 28.240385123352873, lng: -16.629988706884774 },
-            // { lat: 50.09072314148827, lng: 14.393133454556278 },
-            // { lat: 41.413416092316275, lng: 2.1531126527786455 },
-            // { lat: 35.69143938066447, lng: 139.695139627539 },
-            // { lat: 35.67120372775569, lng: 139.77167914398797 },
-            // { lat: 54.552083679428065, lng: -3.297380963134742 }
-        ];
-        var pos = locations[ Math.floor( Math.random() * locations.length ) ];
-        var myLatLng = new google.maps.LatLng( pos.lat, pos.lng );
-        return myLatLng;
-    }
 
     loader.onProgress = function( p ) {
         //setProgress( p );
@@ -135,13 +113,11 @@ function loadPanorama() {
             
     loader.onPanoramaLoad = function() {
     
-        console.log( "onPanoramaLoad" );
+        console.log( 'onPanoramaLoad' );
         //activeLocation = this.location;
         mesh.material.map = new THREE.Texture( this.canvas ); 
         mesh.material.side = THREE.DoubleSide;
         mesh.material.map.needsUpdate = true;
-        //showMessage( 'Panorama tiles loaded.<br/>The images are ' + this.copyright );
-        //showProgress( false );
         onWindowResize();
 
     };
@@ -149,8 +125,7 @@ function loadPanorama() {
     // 1 is very fuzzy, 2 is fuzzy, 3 is the highest resolution available.  
     // 4 errors occur, possibly because 4 panels don't have resolution 3 available
     loader.setZoom( 3 );
-
-    loader.load( getLatLng() );
+    loader.load( new google.maps.LatLng( 39.29533, -76.74360 ) );
 
 }
 

@@ -65,7 +65,7 @@ THREE.EditorControls = function ( object, domElement ) {
 		object.position.add( distance );
 		center.add( distance );
 		*/
-		console.log("pan!");
+		//console.log("pan!");
 
 		scope.dispatchEvent( changeEvent );
 
@@ -81,8 +81,8 @@ THREE.EditorControls = function ( object, domElement ) {
 
 		object.position.add( distance );
 		*/
-		console.log("zoom!");
-		console.log(object.fov);
+		//console.log("zoom!");
+		//console.log(object.fov);
 
 		object.fov += distance;
   		object.fov = Math.min(Math.max(object.fov, 10), 170);
@@ -164,7 +164,7 @@ THREE.EditorControls = function ( object, domElement ) {
 		var movementX = pointer.x - pointerOld.x;
 		var movementY = pointer.y - pointerOld.y;
 
-		console.log( state );
+		//console.log( state );
 
 		if ( state === STATE.ROTATE ) {
 

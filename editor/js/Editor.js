@@ -21,7 +21,7 @@ var Editor = function () {
 
 		cameraChanged: new SIGNALS.Signal(),
 
-		vegSelected: new SIGNALS.Signal(),
+		locationChanged: new SIGNALS.Signal(),
 
 		objectSelected: new SIGNALS.Signal(),
 		objectAdded: new SIGNALS.Signal(),
@@ -44,7 +44,18 @@ var Editor = function () {
 	this.loader = new Loader( this );
 
 	this.scene = new THREE.Scene();
+
 	this.sceneBackground = new THREE.Scene();
+	this.panorama = new THREE.Mesh(
+        new THREE.SphereGeometry( 512, 32, 32 ), 
+        new THREE.MeshBasicMaterial( {
+            map: new THREE.Texture()
+        } )
+    );
+    this.panorama.position.set( 0, 0, 0 );
+    this.panorama.name = "panorama";
+    this.sceneBackground.add( this.panorama );
+
 	this.sceneHelpers = new THREE.Scene();
 
 	this.object = {};
@@ -85,6 +96,54 @@ Editor.prototype = {
 		this.signals.sceneGraphChanged.active = true;
 		this.signals.sceneGraphChanged.dispatch();
 
+	},
+
+	setLocation: function ( coords ) {
+
+    	var loader = new GSVPANO.PanoLoader();
+    	var editor = this;
+
+    	loader.onProgress = function( p ) {
+        	//setProgress( p );
+    	};
+            
+    	loader.onPanoramaData = function( result ) {
+	        //showProgress( true );
+    	    //showMessage( 'Panorama OK. Loading and composing tiles...' );
+    	}
+            
+    	loader.onNoPanoramaData = function( status ) {
+        	//showError("Could not retrieve panorama for the following reason: " + status);
+    	}
+            
+    	loader.onPanoramaLoad = function() {
+    
+        	console.log( 'onPanoramaLoad' );
+        	//activeLocation = this.location;
+        	editor.panorama.material.map = new THREE.Texture( this.canvas ); 
+        	editor.panorama.material.side = THREE.DoubleSide;
+        	editor.panorama.material.map.needsUpdate = true;
+        	onWindowResize();
+    	
+    	};
+    
+    	// 1 is very fuzzy, 2 is fuzzy, 3 is the highest resolution available.  
+    	// 4 errors occur, possibly because 4 panels don't have resolution 3 available
+    	loader.setZoom( 3 );
+    	loader.load( new google.maps.LatLng( coords.lat, coords.lng ) );
+
+		$.ajax( {
+            url: 'http://geoservice-freemancw.rhcloud.com/speciesforlatlng',   
+            data: $.param( coords ),
+            dataType: 'json',
+            success: function( data ) {
+                editor.signals.locationChanged.dispatch( data );
+            },
+            error: function( jqXHR, textStatus, errorThrown ) {
+            	console.log( textStatus );
+            	console.log( errorThrown );
+            }
+	    } );
 	},
 
 	//
