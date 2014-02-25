@@ -2,37 +2,10 @@
  * @author Steven Love <slove13@cs.unc.edu>
  */
 
-
-function createTreeAtPos( x, y, z ) {
-
-    var callback = function( geometry, materials ) {
-
-        
-        var default_mat = new THREE.MeshLambertMaterial( { color: 0x223311 } );        
-        var tree = new THREE.Mesh( geometry, default_mat );
-        var scale = 64;
-        tree.castShadow = true;
-        tree.receiveShadow = true;
-        tree.position.set( x, y, z );
-        tree.scale.set( scale, scale, scale );
-                 
-        // obj3d.castShadow = true;
-        // obj3d.receiveShadow = true;
-        // obj3d.name = "ModelContainer"
-        tree.name = "TreeModel";
-        editor.addObject( tree );
-               
-    }
-    
-    var	mloader = new THREE.JSONLoader();
-    mloader.load("../../streetview-studio/models/tree.js", callback); // FIXME
-    
-}
-
 function createGround() {
 
     var ground = new THREE.Mesh(
-        new THREE.CubeGeometry( 1024, 1, 1024 ), 
+        new THREE.PlaneGeometry( 2048, 2048 ),
         new THREE.MeshLambertMaterial( {
             emissive: 'white', 
             transparent: true, 
@@ -41,14 +14,12 @@ function createGround() {
     );
     ground.overdraw = true;
     ground.receiveShadow = true;
-    ground.position.set( 0, -100, 0 );
-    ground.name = "ground";
-    editor.addObject(ground);
-    //ground.translateY(50);
+    ground.rotation.set( 1.5 * Math.PI, 0, 0 );
+    ground.position.set( 0, -64, 0 );
+    ground.name = 'ground';
+    editor.addObject( ground );
 
 }     
-
-
 
 /** 
  * notes on problems with spotlight in the editor: 
@@ -86,25 +57,29 @@ function createLightAtPos( x, y, z ) {
     //editor.addObject(dlight.target);
 }
 
-function loadTreeAtPos(x,y,z){
+function loadTreeAtPos( x, y, z ) {
     
-     var callback = function( obj3d ) {
+    var callback = function( obj3d ) {
 
-                console.log(obj3d);
+        console.log( obj3d );
 
-                var tree = obj3d.scene.children[0];
-                //tree.name = "tree";
-                tree.position.set(50,-100,250);
-                tree.castShadow = true;
-                tree.receiveShadow = true;
+        var tree = obj3d.scene.children[0];
+        //tree.name = "tree";
+        tree.position.set( 50, -64, 250 );
+        tree.castShadow = true;
+        tree.receiveShadow = true;
+        tree.material = new THREE.MeshLambertMaterial( {
+            map: THREE.ImageUtils.loadTexture( 'media/river_birch.png' ),
+            transparent: true
+        } );
 
+        editor.addObject( tree );
+        editor.select( tree );
 
-                editor.addObject(tree);// obj3d.scene );
-                editor.select(tree);// obj3d.scene );
-            }
+    }
     
-            var mloader = new THREE.ColladaLoader();
-            mloader.load("media/river_birch.DAE", callback); // FIXME
+    var mloader = new THREE.ColladaLoader();
+    mloader.load( 'media/river_birch.DAE', callback ); // FIXME
 }
 
 function loadPanorama() {
@@ -210,3 +185,31 @@ function raiseThings( amt ) {
     } );
 
 }
+
+/*
+function createTreeAtPos( x, y, z ) {
+
+    var callback = function( geometry, materials ) {
+
+        
+        var default_mat = new THREE.MeshLambertMaterial( { color: 0x223311 } );        
+        var tree = new THREE.Mesh( geometry, default_mat );
+        var scale = 64;
+        tree.castShadow = true;
+        tree.receiveShadow = true;
+        tree.position.set( x, y, z );
+        tree.scale.set( scale, scale, scale );
+                 
+        // obj3d.castShadow = true;
+        // obj3d.receiveShadow = true;
+        // obj3d.name = "ModelContainer"
+        tree.name = "TreeModel";
+        editor.addObject( tree );
+               
+    }
+    
+    var mloader = new THREE.JSONLoader();
+    mloader.load("../../streetview-studio/models/tree.js", callback); // FIXME
+    
+}
+*/

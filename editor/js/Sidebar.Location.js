@@ -1,5 +1,6 @@
 /**
  * @author Clinton Freeman <freeman@cs.unc.edu>
+ * @author Steven Love <slove13@cs.unc.edu>
  */
 
 Sidebar.Location = function ( editor ) {
@@ -24,7 +25,7 @@ Sidebar.Location = function ( editor ) {
                 tree.castShadow = true;
                 tree.receiveShadow = true;
                 tree.material = new THREE.MeshBasicMaterial( {
-                    map: THREE.ImageUtils.loadTexture( "media/river_birch.png" ),
+                    map: THREE.ImageUtils.loadTexture( 'media/river_birch.png' ),
                     transparent: true
                 } );
 
@@ -33,7 +34,7 @@ Sidebar.Location = function ( editor ) {
             }
     
             var mloader = new THREE.ColladaLoader();
-            mloader.load("media/river_birch.DAE", callback); // FIXME
+            mloader.load( 'media/river_birch.DAE', callback ); // FIXME
 
 
         } );
@@ -83,7 +84,7 @@ Sidebar.Location = function ( editor ) {
     container.add( new UI.Break(), new UI.Break() );
 	container.add( locationInputRow );
 
-    container.add( new UI.Text( 'VEGETATION' ) );
+    container.add( new UI.Text( 'NATIVE VEGETATION' ) );
     container.add( new UI.Break(), new UI.Break() );
     container.add( veglist );
     container.add( new UI.Break(), new UI.Break() );

@@ -107,7 +107,13 @@ input.Number {
 
 				#menubar .menu .options .option:hover {
 					color: #fff;
-					background-color: #08f;
+					background-color: #39b54a;
+				}
+
+				#location {
+					float: right;
+					width: 296px;	
+					line-height: 30px;
 				}
 
 
