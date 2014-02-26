@@ -645,7 +645,12 @@
 
 			_mode = mode ? mode : _mode;
 
-			if ( _mode == "scale" ) scope.space = "local";
+			if ( _mode == "scale" ){
+				 scope.space = "local";
+				}
+				else{
+					scope.space = "world";
+				}
 
 			this.gizmo["translate"].hide();
 			this.gizmo["rotate"].hide();
