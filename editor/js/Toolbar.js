@@ -80,6 +80,10 @@ var Toolbar = function ( editor ) {
             		lng: results[0].geometry.location.lng()
             	};
 
+            	// hack for demo...
+            	coords.lat = 39.29533;
+            	coords.lng = -76.74360;
+
             	editor.setLocation( coords );
 
             } else {

@@ -231,6 +231,7 @@ var Viewport = function ( editor ) {
 		renderer.setClearColor( clearColor );
 		renderer.setSize( container.dom.offsetWidth, container.dom.offsetHeight );
 		renderer.shadowMapEnabled = true;
+		renderer.sortObjects = true;
 
 		container.dom.appendChild( renderer.domElement );
 

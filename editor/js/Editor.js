@@ -129,7 +129,7 @@ Editor.prototype = {
     
     	// 1 is very fuzzy, 2 is fuzzy, 3 is the highest resolution available.  
     	// 4 errors occur, possibly because 4 panels don't have resolution 3 available
-    	loader.setZoom( 3 );
+    	loader.setZoom( 4 );
     	loader.load( new google.maps.LatLng( coords.lat, coords.lng ) );
 
 		$.ajax( {
@@ -137,6 +137,7 @@ Editor.prototype = {
             data: $.param( coords ),
             dataType: 'json',
             success: function( data ) {
+            	console.log( data );
                 editor.signals.locationChanged.dispatch( data );
             },
             error: function( jqXHR, textStatus, errorThrown ) {
@@ -314,11 +315,14 @@ Editor.prototype = {
 
 	//
 
-	//Simplify by reducing selectable objects for RHESSys users
+	// Simplify by reducing selectable objects for RHESSys users
 	unselectable: function ( object ) {
-		if(object == null)return false;
+		
+		if ( object == null ) {
+			return false;
+		}
 
-		if(object.name == "ground" || object.name == "panorama" ){
+		if ( object.name == "ground" || object.name == "panorama" ) {
 			return true;
 		}
 
@@ -330,19 +334,15 @@ Editor.prototype = {
 
 	select: function ( object ) {
 
-		if(this.unselectable( object ) ){
+		if ( this.unselectable( object ) ) {
 
 			//Don't allow selection of these things
-			/*
 			this.deselect();
 			return;
-			*/
-
 
 			//Still allow selecting so that I can mess with them.
 
 		}
-
 
 		if ( object !== null ) {
 
