@@ -18,7 +18,10 @@ Sidebar.Vegetation = function ( editor ) {
 
             var callback = function( obj3d ) {
 
-            var treeTexture = THREE.ImageUtils.loadTexture( 'media/species/' + vegInfo.file + '/diffuse.png' );
+            var treeTexture = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
+            treeTexture.anisotropy = editor.config.getKey( 'maxAnisotropy' );
+            //treeTexture.minFilter = THREE.NearestMipMapLinearFilter;
+            treeTexture.minFilter = treeTexture.magFilter = THREE.LinearFilter;
             var uniforms = { texture:  { type: "t", value: treeTexture } };
         
                 var fragmentShader = '' +
@@ -67,7 +70,7 @@ Sidebar.Vegetation = function ( editor ) {
             }
     
             var mloader = new THREE.ColladaLoader();
-            mloader.load( 'media/species/' + vegInfo.file + '/mesh.DAE', callback );
+            mloader.load( 'media/vegetation/' + vegInfo.file + '/mesh.DAE', callback );
 
         } );
 
