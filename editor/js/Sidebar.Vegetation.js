@@ -211,14 +211,15 @@ Sidebar.Vegetation = function ( editor ) {
                 mesh.receiveShadow = true;
                 mesh.material = new THREE.MeshLambertMaterial( {
                     map: diffuseTex,
-                    transparent: true,
-                    side: THREE.DoubleSide
+                    transparent: true
                 } );
+                /*
                 mesh.customDepthMaterial = new THREE.ShaderMaterial( { 
                     uniforms: uniforms, 
                     vertexShader: vertexShader, 
                     fragmentShader: fragmentShader 
                 } );
+                */
 
                 editor.addObject( mesh );
                 editor.select( mesh );
