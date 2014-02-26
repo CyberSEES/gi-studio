@@ -88,6 +88,7 @@ input.Number {
 			display: none;
 			padding: 5px 0px;
 			background: #eee;
+			border: 1px solid #ccc;
 			width: 140px;
 		}
 

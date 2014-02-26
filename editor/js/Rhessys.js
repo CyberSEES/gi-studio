@@ -43,7 +43,7 @@ function createLightAtPos( x, y, z ) {
     dlight.position.set( x, y, z );        
     
     dlight.castShadow = true;
-    dlight.shadowDarkness = 0.75;
+    dlight.shadowDarkness = 0.5;
     dlight.shadowMapWidth = 2048;
     dlight.shadowMapHeight = 2048;
 
