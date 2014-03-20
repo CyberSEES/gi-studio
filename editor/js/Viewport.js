@@ -222,7 +222,6 @@ var Viewport = function ( editor ) {
 	} );
 
 	signals.rendererChanged.add( function ( type ) {
-
 		container.dom.removeChild( renderer.domElement );
 
 		renderer = new THREE[ type ]( { antialias: true } );
@@ -232,6 +231,7 @@ var Viewport = function ( editor ) {
 		renderer.setSize( container.dom.offsetWidth, container.dom.offsetHeight );
 		renderer.shadowMapEnabled = true;
 		renderer.sortObjects = true;
+		renderer.setDepthTest(false);
 
 		editor.config.setKey( 'maxAnisotropy', renderer.getMaxAnisotropy() );
 
@@ -577,9 +577,12 @@ var Viewport = function ( editor ) {
 	}
 
 	function render() {
-
+		console.log('rendering');
+		renderer.setDepthTest(false);
+		renderer.setBlending(THREE.AdditiveBlending);
 		sceneHelpers.updateMatrixWorld();
 		scene.updateMatrixWorld();
+			renderer.setDepthTest(false);
 
 		renderer.clear();
 		renderer.render( sceneBackground, camera );

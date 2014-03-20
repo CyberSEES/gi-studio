@@ -5232,12 +5232,12 @@ THREE.WebGLRenderer = function ( parameters ) {
 	};
 
 	this.setDepthTest = function ( depthTest ) {
-
 		if ( _oldDepthTest !== depthTest ) {
+
 
 			if ( depthTest ) {
 
-				_gl.enable( _gl.DEPTH_TEST );
+				_gl.disable( _gl.DEPTH_TEST );
 
 			} else {
 
@@ -5304,6 +5304,12 @@ THREE.WebGLRenderer = function ( parameters ) {
 	};
 
 	this.setBlending = function ( blending, blendEquation, blendSrc, blendDst ) {
+
+		// _gl.enable( _gl.BLEND );
+		// _gl.blendEquation( _gl.FUNC_ADD );
+		// _gl.blendFunc( _gl.SRC_ALPHA, _gl.ONE );
+
+		// return;
 
 		if ( blending !== _oldBlending ) {
 
@@ -6520,7 +6526,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		_gl.clearDepth( 1 );
 		_gl.clearStencil( 0 );
 
-		_gl.enable( _gl.DEPTH_TEST );
+		_gl.disable( _gl.DEPTH_TEST );
 		_gl.depthFunc( _gl.LEQUAL );
 
 		_gl.frontFace( _gl.CCW );
