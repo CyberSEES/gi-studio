@@ -55,10 +55,10 @@ var Toolbar = function ( editor ) {
 	buttons.add( scale );
 
 
-	var sendToRhessys = new UI.Button( 'Send to RHESSYS' ).onClick( function() {
+	var sendToNotebook = new UI.Button( 'Send to GI Notebook' ).onClick( function() {
 
 	} );
-	buttons.add( sendToRhessys );
+	buttons.add( sendToNotebook );
 
 
 	// grid
