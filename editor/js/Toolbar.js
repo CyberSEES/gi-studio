@@ -55,7 +55,7 @@ var Toolbar = function ( editor ) {
 	buttons.add( scale );
 
 
-	var sendToRhessys = new UI.Button( 'Send to RHESSYS' ).onClick( function() {
+	var sendToRhessys = new UI.Button( 'Save to GI Notebook' ).onClick( function() {
 
 	} );
 	buttons.add( sendToRhessys );
