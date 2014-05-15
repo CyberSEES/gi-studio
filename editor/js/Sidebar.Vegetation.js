@@ -42,6 +42,9 @@ Sidebar.Vegetation = function ( editor ) {
     var vegContainer = categoryContainerArray[ 'vegetation' ];
 
     var vegParamContainer = new UI.Panel();
+    var vegParamDiameter;
+    var vegParamCrownHeight;
+    var vegParamHeight;
     var vegSelect = new UI.FancySelect().setId( 'veglist' );
 
     vegSelect.onChange( function () {
@@ -90,8 +93,11 @@ Sidebar.Vegetation = function ( editor ) {
                     '}';
 
                 var mesh = obj3d.scene.children[0];
+                var height = 
                 mesh.position.set( 128, -64, 256 );
-                mesh.scale.set( 1.5, 1.5, 1.5 );
+                // apply arbitrary scaling factors to the user provided/default values for size
+                // need to find a way to use crown height in scaling the 3d model
+               
                 mesh.castShadow = true;
                 mesh.receiveShadow = false;
                 mesh.material = new THREE.MeshLambertMaterial( {
@@ -107,6 +113,13 @@ Sidebar.Vegetation = function ( editor ) {
 
                 editor.addObject( mesh );
                 editor.select( mesh );
+
+                // scaling
+                var scaleX = mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x;
+                var scaleY = mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y;
+                var scaleZ = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
+                mesh.scale.set( vegParamDiameter.getValue()*10.0/scaleX, vegParamDiameter.getValue()*10.0/scaleY, vegParamHeight.getValue()*10.0/scaleZ );
+                editor.signals.sceneGraphChanged.dispatch();
             }
     
             var mloader = new THREE.ColladaLoader();
@@ -124,16 +137,24 @@ Sidebar.Vegetation = function ( editor ) {
         vegParamContainer.add( new UI.Text( vegInfo.common ) );
         vegParamContainer.add( new UI.Break() );
         vegParamContainer.add( new UI.Text( 'Diameter' ).setWidth( '110px' ) );
-        vegParamContainer.add( new UI.Number( vegInfo.diameter) );
+        vegParamDiameter =  new UI.Number( vegInfo.diameter).onChange(function() {
+            // todo
+        });
+        vegParamContainer.add(vegParamDiameter);
+        vegParamContainer.add( new UI.Break() );
+        vegParamContainer.add( new UI.Text( 'Crown Height' ).setWidth( '110px' ) );
+        vegParamCrownHeight = new UI.Number( vegInfo.crownHeight).onChange(function() {
+            // todo
+        })
+        vegParamContainer.add(vegParamCrownHeight);
         vegParamContainer.add( new UI.Break() );
         vegParamContainer.add( new UI.Text( 'Height' ).setWidth( '110px' ) );
-        vegParamContainer.add( new UI.Number( vegInfo.height) );
-        vegParamContainer.add( new UI.Break() );
-        vegParamContainer.add( new UI.Text( 'Crown height' ).setWidth( '110px' ) );
-        vegParamContainer.add( new UI.Number( vegInfo.crownHeight) );
+        vegParamHeight = new UI.Number( vegInfo.height).onChange(function() {
+           // todo
+        })
+        vegParamContainer.add( vegParamHeight );
         vegParamContainer.add( new UI.Break() );
         vegParamContainer.add( vegAddButton );
-
     } );
 
     signals.locationChanged.add( function( data ) {
@@ -290,5 +311,3 @@ Sidebar.Vegetation = function ( editor ) {
 
 	return container;
 }
-
-
