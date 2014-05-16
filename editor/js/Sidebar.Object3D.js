@@ -25,7 +25,7 @@ Sidebar.Object3D = function ( editor ) {
 	objectUUIDRow.add( objectUUID );
 	objectUUIDRow.add( objectUUIDRenew );
 
-	container.add( objectUUIDRow );
+	//container.add( objectUUIDRow );
 
 	// name
 
@@ -42,14 +42,12 @@ Sidebar.Object3D = function ( editor ) {
 	container.add( objectNameRow );
 
 	// parent
-
+    // todo: note that we don't add the parent container to the sidebar
 	var objectParentRow = new UI.Panel();
 	var objectParent = new UI.Select().setWidth( '150px' ).setColor( '#444' ).setFontSize( '12px' ).onChange( update );
-
 	objectParentRow.add( new UI.Text( 'Parent' ).setWidth( '90px' ) );
 	objectParentRow.add( objectParent );
-
-	container.add( objectParentRow );
+	//container.add( objectParentRow );
 
 	// position
 
@@ -64,158 +62,114 @@ Sidebar.Object3D = function ( editor ) {
 	container.add( objectPositionRow );
 
 	// rotation
-
+    // todo: note that we don't add the rotation to the sidebar
 	var objectRotationRow = new UI.Panel();
 	var objectRotationX = new UI.Number().setWidth( '50px' ).onChange( update );
 	var objectRotationY = new UI.Number().setWidth( '50px' ).onChange( update );
 	var objectRotationZ = new UI.Number().setWidth( '50px' ).onChange( update );
-
 	objectRotationRow.add( new UI.Text( 'Rotation' ).setWidth( '90px' ) );
 	objectRotationRow.add( objectRotationX, objectRotationY, objectRotationZ );
-
-	container.add( objectRotationRow );
+	//container.add( objectRotationRow );
 
 	// scale
-
+	// todo: make scale use rhessys parameters
 	var objectScaleRow = new UI.Panel();
 	var objectScaleLock = new UI.Checkbox().setPosition( 'absolute' ).setLeft( '75px' );
 	var objectScaleX = new UI.Number( 1 ).setWidth( '50px' ).onChange( updateScaleX );
 	var objectScaleY = new UI.Number( 1 ).setWidth( '50px' ).onChange( updateScaleY );
 	var objectScaleZ = new UI.Number( 1 ).setWidth( '50px' ).onChange( updateScaleZ );
-
 	objectScaleRow.add( new UI.Text( 'Scale' ).setWidth( '90px' ) );
 	objectScaleRow.add( objectScaleLock );
 	objectScaleRow.add( objectScaleX, objectScaleY, objectScaleZ );
-
 	container.add( objectScaleRow );
 
 	// fov
 
 	var objectFovRow = new UI.Panel();
 	var objectFov = new UI.Number().onChange( update );
-
 	objectFovRow.add( new UI.Text( 'Fov' ).setWidth( '90px' ) );
 	objectFovRow.add( objectFov );
-
-	container.add( objectFovRow );
+//	container.add( objectFovRow );
 
 	// near
-
 	var objectNearRow = new UI.Panel();
 	var objectNear = new UI.Number().onChange( update );
-
 	objectNearRow.add( new UI.Text( 'Near' ).setWidth( '90px' ) );
 	objectNearRow.add( objectNear );
-
-	container.add( objectNearRow );
+//	container.add( objectNearRow );
 
 	// far
-
 	var objectFarRow = new UI.Panel();
 	var objectFar = new UI.Number().onChange( update );
-
 	objectFarRow.add( new UI.Text( 'Far' ).setWidth( '90px' ) );
 	objectFarRow.add( objectFar );
-
-	container.add( objectFarRow );
+//	container.add( objectFarRow );
 
 	// intensity
-
 	var objectIntensityRow = new UI.Panel();
 	var objectIntensity = new UI.Number().setRange( 0, Infinity ).onChange( update );
-
 	objectIntensityRow.add( new UI.Text( 'Intensity' ).setWidth( '90px' ) );
 	objectIntensityRow.add( objectIntensity );
-
-	container.add( objectIntensityRow );
+//	container.add( objectIntensityRow );
 
 	// color
-
 	var objectColorRow = new UI.Panel();
 	var objectColor = new UI.Color().onChange( update );
-
 	objectColorRow.add( new UI.Text( 'Color' ).setWidth( '90px' ) );
 	objectColorRow.add( objectColor );
-
-	container.add( objectColorRow );
+//	container.add( objectColorRow );
 
 	// ground color
-
 	var objectGroundColorRow = new UI.Panel();
 	var objectGroundColor = new UI.Color().onChange( update );
-
 	objectGroundColorRow.add( new UI.Text( 'Ground color' ).setWidth( '90px' ) );
 	objectGroundColorRow.add( objectGroundColor );
-
-	container.add( objectGroundColorRow );
+//	container.add( objectGroundColorRow );
 
 	// distance
-
 	var objectDistanceRow = new UI.Panel();
 	var objectDistance = new UI.Number().setRange( 0, Infinity ).onChange( update );
-
 	objectDistanceRow.add( new UI.Text( 'Distance' ).setWidth( '90px' ) );
 	objectDistanceRow.add( objectDistance );
-
-	container.add( objectDistanceRow );
+//	container.add( objectDistanceRow );
 
 	// angle
-
 	var objectAngleRow = new UI.Panel();
 	var objectAngle = new UI.Number().setPrecision( 3 ).setRange( 0, Math.PI / 2 ).onChange( update );
-
 	objectAngleRow.add( new UI.Text( 'Angle' ).setWidth( '90px' ) );
 	objectAngleRow.add( objectAngle );
-
-	container.add( objectAngleRow );
+//	container.add( objectAngleRow );
 
 	// exponent
-
 	var objectExponentRow = new UI.Panel();
 	var objectExponent = new UI.Number().setRange( 0, Infinity ).onChange( update );
-
 	objectExponentRow.add( new UI.Text( 'Exponent' ).setWidth( '90px' ) );
 	objectExponentRow.add( objectExponent );
-
-	container.add( objectExponentRow );
+//	container.add( objectExponentRow );
 
 	// visible
-
 	var objectVisibleRow = new UI.Panel();
 	var objectVisible = new UI.Checkbox().onChange( update );
-
 	objectVisibleRow.add( new UI.Text( 'Visible' ).setWidth( '90px' ) );
 	objectVisibleRow.add( objectVisible );
-
-	container.add( objectVisibleRow );
+//	container.add( objectVisibleRow );
 
 	// user data
-
 	var objectUserDataRow = new UI.Panel();
 	var objectUserData = new UI.TextArea().setWidth( '150px' ).setHeight( '40px' ).setColor( '#444' ).setFontSize( '12px' ).onChange( update );
-	objectUserData.onKeyUp( function () {
-
+    objectUserData.onKeyUp( function () {
 		try {
-
 			JSON.parse( objectUserData.getValue() );
-			objectUserData.setBorderColor( '#ccc' );
+    		objectUserData.setBorderColor( '#ccc' );
 			objectUserData.setBackgroundColor( '' );
-
 		} catch ( error ) {
-
 			objectUserData.setBorderColor( '#f00' );
 			objectUserData.setBackgroundColor( 'rgba(255,0,0,0.25)' );
-
 		}
-
 	} );
-
 	objectUserDataRow.add( new UI.Text( 'User data' ).setWidth( '90px' ) );
 	objectUserDataRow.add( objectUserData );
-
-	container.add( objectUserDataRow );
-
-
+//	container.add( objectUserDataRow );
 	//
 
 	function updateScaleX() {

@@ -14,33 +14,24 @@ Sidebar.Vegetation = function ( editor ) {
         'vegetation': new UI.Panel(),
         'ground': new UI.Panel()
     };  
-
     // default to veg
     categoryContainer.add( categoryContainerArray[ 'vegetation' ] );
-
     // CATEGORY SELECTION
-
     var categorySelectRow = new UI.Panel();
     var categorySelect = new UI.Select().setOptions( {
-
         'vegetation': 'Native vegetation',
         'ground': 'Ground objects'
-
     } ).setWidth( '150px' ).setColor( '#444' ).setFontSize( '12px' );
     categorySelect.onChange( function () {
-
         var type = categorySelect.getValue();
         categoryContainer.clear();
         categoryContainer.add( categoryContainerArray[ type ] );
-
     } );
     categorySelectRow.add( new UI.Text( 'Category' ).setWidth( '90px' ) );
     categorySelectRow.add( categorySelect );
 
     // VEGETATION CONTAINER
-
     var vegContainer = categoryContainerArray[ 'vegetation' ];
-
     var vegParamContainer = new UI.Panel();
     var vegParamDiameter;
     var vegParamCrownHeight;
@@ -48,26 +39,20 @@ Sidebar.Vegetation = function ( editor ) {
     var vegSelect = new UI.FancySelect().setId( 'veglist' );
 
     vegSelect.onChange( function () {
-
         var vegInfo = this.locationData[ this.selectedIndex ];
-
         var vegAddButton = new UI.Button( 'Add to scene' );
         vegAddButton.onClick( function() {
-
             var callback = function( obj3d ) {
-
                 var diffuseTex = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
                 diffuseTex.anisotropy = editor.config.getKey( 'maxAnisotropy' );
                 diffuseTex.minFilter = THREE.LinearFilter;
                 diffuseTex.magFilter = THREE.LinearFilter;
-
-                var uniforms = { 
+                var uniforms = {
                     texture: { 
                         type: "t", 
                         value: diffuseTex
                     } 
                 };
-        
                 var fragmentShader = '' +
                     'uniform sampler2D texture;' +
                     'varying vec2 vUV;' +
@@ -83,7 +68,6 @@ Sidebar.Vegetation = function ( editor ) {
                         'if ( pixel.a < 0.5 ) discard;' +
                         'gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );' +
                     '}';
-
                 var vertexShader = '' +
                     'varying vec2 vUV;' +
                     'void main() {' +
@@ -91,13 +75,9 @@ Sidebar.Vegetation = function ( editor ) {
                         'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );' +
                         'gl_Position = projectionMatrix * mvPosition;' +
                     '}';
-
                 var mesh = obj3d.scene.children[0];
                 var height = 
                 mesh.position.set( 128, -64, 256 );
-                // apply arbitrary scaling factors to the user provided/default values for size
-                // need to find a way to use crown height in scaling the 3d model
-               
                 mesh.castShadow = true;
                 mesh.receiveShadow = false;
                 mesh.material = new THREE.MeshLambertMaterial( {
@@ -110,11 +90,13 @@ Sidebar.Vegetation = function ( editor ) {
                     vertexShader: vertexShader, 
                     fragmentShader: fragmentShader 
                 } );
-
+                mesh.name=vegInfo.common;
                 editor.addObject( mesh );
                 editor.select( mesh );
-
                 // scaling
+                // apply arbitrary scaling factors to the user provided/default values for size
+                // need to find a way to use crown height in scaling the 3d model
+               
                 var scaleX = mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x;
                 var scaleY = mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y;
                 var scaleZ = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
@@ -145,13 +127,13 @@ Sidebar.Vegetation = function ( editor ) {
         vegParamContainer.add( new UI.Text( 'Crown Height' ).setWidth( '110px' ) );
         vegParamCrownHeight = new UI.Number( vegInfo.crownHeight).onChange(function() {
             // todo
-        })
+        });
         vegParamContainer.add(vegParamCrownHeight);
         vegParamContainer.add( new UI.Break() );
         vegParamContainer.add( new UI.Text( 'Height' ).setWidth( '110px' ) );
         vegParamHeight = new UI.Number( vegInfo.height).onChange(function() {
            // todo
-        })
+        });
         vegParamContainer.add( vegParamHeight );
         vegParamContainer.add( new UI.Break() );
         vegParamContainer.add( vegAddButton );
@@ -247,7 +229,7 @@ Sidebar.Vegetation = function ( editor ) {
                     fragmentShader: fragmentShader 
                 } );
                 */
-
+                 mesh.name=gndInfo.common;
                 editor.addObject( mesh );
                 editor.select( mesh );
             }
