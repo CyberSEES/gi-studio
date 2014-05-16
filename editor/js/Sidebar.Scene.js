@@ -4,7 +4,7 @@ Sidebar.Scene = function ( editor ) {
 
 	var container = new UI.Panel();
 
-	container.add( new UI.Text( 'SCENE' ) );
+	container.add( new UI.Text( 'GI ELEMENTS' ) );
 	container.add( new UI.Break(), new UI.Break() );
 
 	var outliner = new UI.FancySelect().setId( 'outliner' );
@@ -163,13 +163,10 @@ Sidebar.Scene = function ( editor ) {
 				if ( !displayObject( object ) ) {
 					//don't display them at all
 					continue;
-
-					//"Advanced view": display them with extra padding, so we can distinguish them
-					var invis_pad = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
 				}
 
-				var option = invis_pad + pad + '<span class="type ' + objectType + '"></span> ' + object.name;
-
+				var option = pad + '<span class="type ' + objectType + '"></span> ' + object.name;
+                /**
 				if ( object instanceof THREE.Mesh ) {
 
 					var geometry = object.geometry;
@@ -182,10 +179,10 @@ Sidebar.Scene = function ( editor ) {
 					option += ' <span class="type ' + materialType + '"></span> ' + material.name;
 
 				}
-
+                */
 				options[ object.id ] = option;
 
-				addObjects( object.children, invis_pad + pad + '&nbsp;&nbsp;&nbsp;' ); //this is the subsequent spacing that children of other objects get
+				addObjects( object.children, '&nbsp;&nbsp;&nbsp;' ); //this is the subsequent spacing that children of other objects get
 
 			}
 
