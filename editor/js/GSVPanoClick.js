@@ -205,8 +205,7 @@ GSVPANO.PanoLoader = function (parameters) {
 			if (status === google.maps.StreetViewStatus.OK) {
 				self.result = result;
 				if( self.onPanoramaData ) self.onPanoramaData( result );
-				var h = google.maps.geometry.spherical.computeHeading(location, result.location.latLng);
-				rotation = (result.tiles.centerHeading - h) * Math.PI / 180.0;
+				self.rotation = (-result.tiles.centerHeading - 90) * Math.PI / 180.0;
 				copyright = result.copyright;
 				self.copyright = result.copyright;
 				_panoId = result.location.pano;
