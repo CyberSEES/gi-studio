@@ -19,7 +19,26 @@ function createGround() {
     ground.name = 'ground';
     editor.addObject( ground ); 
 
-}     
+}
+
+function threeToLatlng(vec, camLatLng) {
+
+    var lat = camLatLng.lat() - 5.75741801e-08 * vec.x + 4.12808625e-06 * vec.z;
+    var lng = camLatLng.lng() + (-4.12021846e-06 * vec.x + 1.05564965e-08 * vec.z) * 1./Math.cos(lat * Math.PI / 180.);
+    var latLng = new google.maps.LatLng(lat, lng);
+    return latLng;
+}
+
+function latlngToThree(latLng, camLatLng) {
+
+    var lngScale = 1./Math.cos(latLng.lat() * Math.PI / 180.);
+    var tmp = 4.12808625e-06 / (1.05564965e-08*lngScale);
+    var latDiff = latLng.lat() - camLatLng.lat();
+    var lngDiff = latLng.lng() - camLatLng.lng();
+    var x = -(latDiff - tmp*lngDiff) / (tmp*-4.12021846e-06*lngScale - 5.75741801e-08);
+    var z = (latDiff + 5.75741801e-08*x) / 4.12808625e-06;
+    return new THREE.Vector3(x, 0, z);
+}
 
 /** 
  * notes on problems with spotlight in the editor: 
