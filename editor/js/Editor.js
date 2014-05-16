@@ -117,9 +117,10 @@ Editor.prototype = {
     	}
             
     	loader.onPanoramaLoad = function() {
-    
+
         	console.log( 'onPanoramaLoad' );
         	//activeLocation = this.location;
+        	editor.panorama.quaternion.setFromAxisAngle(new THREE.Vector3(0,1,0), this.rotation);
         	console.log(this.canvas);
         	editor.panorama.material.map = new THREE.Texture( this.canvas[0] ); 
         	editor.panorama.material.side = THREE.DoubleSide;
