@@ -186,12 +186,12 @@ input.Number {
 	}
 
 	#toolbar button {
-		margin-right: 6px;
+		margin-right: 4px;
 	}
 
 	#location {
 		float: right;
-		width: 296px;	
+		width: 240px;	
 		line-height: 30px;
 	}
 
