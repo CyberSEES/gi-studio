@@ -8,7 +8,7 @@ Sidebar.Location = function ( editor ) {
 
 	var container = new UI.Panel();
 	var locationInputRow = new UI.Panel();
-	var locationInput = new UI.Input().setWidth( '200px' ).setColor( '#444' ).setFontSize( '12px' );
+	var locationInput = new UI.Input().setWidth( '180px' ).setColor( '#444' ).setFontSize( '12px' );
 	var autocomplete = new google.maps.places.Autocomplete( locationInput.dom );
 
     var veginfoPanel = new UI.Panel();
@@ -45,7 +45,8 @@ Sidebar.Location = function ( editor ) {
 
     } );
 
-	var goButton = new UI.Button( 'Go' ).onClick( function() {
+	
+		var goCallback = function() {
 		var geocoder = new google.maps.Geocoder();
 		geocoder.geocode( { 'address': locationInput.getValue() }, function( results, status ) {
             if (status == google.maps.GeocoderStatus.OK) {
@@ -73,7 +74,8 @@ Sidebar.Location = function ( editor ) {
             } else {
             	console.log( "Geocoding error. Status: " + status );
             }
-        } );
+        } 
+        var goButton = new UI.Button( 'Go' ).onClick( goCallback );
 	} );
 
 	locationInputRow.add( locationInput );
