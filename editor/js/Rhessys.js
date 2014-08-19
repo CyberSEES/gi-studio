@@ -21,6 +21,8 @@ function createGround() {
 
 }
 
+//a function.......
+
 function threeToLatlng(vec, camLatLng) {
 
     var lat = camLatLng.lat() - 5.75741801e-08 * vec.x + 4.12808625e-06 * vec.z;
