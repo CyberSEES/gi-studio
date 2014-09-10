@@ -56,7 +56,26 @@ var Toolbar = function ( editor ) {
 
 
 	var sendToNotebook = new UI.Button( 'Send to GI Notebook' ).onClick( function() {
-
+    // window.alert("Send to GI Notebook Pressed");
+    var index = 0;
+    var length = editor.scene.children.length;
+    for(index = 0; index < length; index++) 
+    {
+      var THREE_object = editor.scene.children[index];
+      console.log(THREE_object);
+      if (THREE_object.name === "River Birch")
+      {
+        window.alert("PlantID = 0 (River Birch)\n UniqueID = " + THREE_object.uuid + "\n coordinates <x,y,z> = <" + THREE_object.position.x + ", " + THREE_object.position.y + ", " + THREE_object.position.z + ">");
+      }
+      else if (THREE_object.name === "Gray Oak")
+      {
+        window.alert("PlantID = 1 (Gray Oak)\n UniqueID = " + THREE_object.uuid + "\n coordinates <x,y,z> = <" + THREE_object.position.x + ", " + THREE_object.position.y + ", " + THREE_object.position.z + ">");
+      }
+      else if (THREE_object.name === "Tussock Sedge")
+      {
+        window.alert("PlantID = 2 (Tussock Sedge)\n UniqueID = " + THREE_object.uuid + "\n coordinates <x,y,z> = <" + THREE_object.position.x + ", " + THREE_object.position.y + ", " + THREE_object.position.z + ">");
+      }
+    } 
 	} );
 	buttons.add( sendToNotebook );
 
