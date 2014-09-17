@@ -148,7 +148,7 @@ Sidebar.Vegetation = function ( editor ) {
         data.forEach( function( specie ) {
 
             options.push( 
-                '<div><img src="media/vegetation/' + specie.file + '/thumbnail.png" width="100%" /></div>' +
+                '<div><img src="media/vegetation/' + specie.file + '/thumbnail.png" width="100%" draggable="true"/></div>' +
                 specie.common
             );    
 

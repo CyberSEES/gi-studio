@@ -4,9 +4,17 @@ var Viewport = function ( editor ) {
 
 	var container = new UI.Panel();
 	container.setPosition( 'absolute' );
-  container.ondrop(function() {
-    alert("dropped");
 
+  // drag and drop functionality
+  container.ondrop(function(ev) {
+    // alert("dropped");
+    var data = ev.dataTransfer.getData("text/html");
+    alert(data + " dropped");
+
+  } );
+  
+  container.ondragover(function(ev) {
+    ev.preventDefault();
   } );
 
 	var info = new UI.Text();

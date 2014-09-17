@@ -420,6 +420,23 @@ UI.FancySelect.prototype.setOptions = function ( options ) {
 
 		}, false );
 
+    option.addEventListener("dragstart", function (event) {
+      var src = event.target.src;
+      var selectedGI = "";
+
+      // TODO generic functionality for each GI
+      if (src.indexOf("betunigr") > -1) { 
+        selectedGI = "River Birch";
+      }
+      if (src.indexOf("quergris") > -1) { 
+        selectedGI = "Gray Oak";
+      }
+      if (src.indexOf("carestri") > -1) { 
+        selectedGI = "Tussock Sedge";
+      }
+
+      event.dataTransfer.setData("text/html", selectedGI);
+    }, false );
 	}
 
 	return scope;
