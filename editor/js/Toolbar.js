@@ -57,6 +57,9 @@ var Toolbar = function ( editor ) {
 
 	var sendToNotebook = new UI.Button( 'Send to GI Notebook' ).onClick( function() {
     // window.alert("Send to GI Notebook Pressed");
+	
+	dispLngLat(); //convert the x,y,z coordinates to longitutd and latitude. Then, give an alert
+		
     var index = 0;
     var length = editor.scene.children.length;
     for(index = 0; index < length; index++) 
@@ -123,7 +126,28 @@ var Toolbar = function ( editor ) {
 		signals.spaceChanged.dispatch( local.getValue() === true ? "local" : "world" );
 
 	}
+	
+	function dispLngLat()
+	{
+		var object = editor.selected;
+		
+		if( object == undefined)
+		{
+			
+			alert("please select an object first!");
+			
+		}
+		
+		else
+		{
+			var xyzCoord = new THREE.Vector3 (object.position.x,  object.position.z ,object.position.y);
+			var camLatLng = new google.maps.LatLng (39.2952463 , -76.743785);
 
+			alert("the latitude and longitude is: " + threeToLatlng(xyzCoord , camLatLng));
+			
+		}
+	}
+	
 	update();
 
 	return container;
