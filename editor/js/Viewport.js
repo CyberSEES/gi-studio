@@ -4,6 +4,10 @@ var Viewport = function ( editor ) {
 
 	var container = new UI.Panel();
 	container.setPosition( 'absolute' );
+  container.ondrop(function() {
+    alert("dropped");
+
+  } );
 
 	var info = new UI.Text();
 	info.setPosition( 'absolute' );
