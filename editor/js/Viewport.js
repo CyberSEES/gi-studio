@@ -7,10 +7,7 @@ var Viewport = function ( editor ) {
 
   // drag and drop functionality
   container.ondrop(function(ev) {
-    // alert("dropped");
-    var data = ev.dataTransfer.getData("text/html");
-    alert(data + " dropped");
-
+    document.getElementById('addButton').click()
   } );
   
   container.ondragover(function(ev) {

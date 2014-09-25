@@ -1,6 +1,7 @@
 /**
  * @author Clinton Freeman <freeman@cs.unc.edu>
  * @author Steven Love <slove13@cs.unc.edu>
+ * @author Jordan Reese <jsreese@cs.unc.edu>
  */
 
 Sidebar.Vegetation = function ( editor ) {
@@ -40,70 +41,71 @@ Sidebar.Vegetation = function ( editor ) {
 
     vegSelect.onChange( function () {
         var vegInfo = this.locationData[ this.selectedIndex ];
-        var vegAddButton = new UI.Button( 'Add to scene' );
+        var vegAddButton = new UI.Button( 'Add to scene', 'addButton' );
+        var callback = function( obj3d ) {
+            var diffuseTex = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
+            diffuseTex.anisotropy = editor.config.getKey( 'maxAnisotropy' );
+            diffuseTex.minFilter = THREE.LinearFilter;
+            diffuseTex.magFilter = THREE.LinearFilter;
+            var uniforms = {
+                texture: {
+                    type: "t",
+                    value: diffuseTex
+                }
+            };
+            var fragmentShader = '' +
+                'uniform sampler2D texture;' +
+                'varying vec2 vUV;' +
+                'vec4 pack_depth( const in float depth ) {' +
+                    'const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );' +
+                    'const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );' +
+                    'vec4 res = fract( depth * bit_shift );' +
+                    'res -= res.xxyz * bit_mask;' +
+                    'return res;' +
+                '}' +
+                'void main() {' +
+                    'vec4 pixel = texture2D( texture, vUV );' +
+                    'if ( pixel.a < 0.5 ) discard;' +
+                    'gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );' +
+                '}';
+            var vertexShader = '' +
+                'varying vec2 vUV;' +
+                'void main() {' +
+                    'vUV = 0.75 * uv;' +
+                    'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );' +
+                    'gl_Position = projectionMatrix * mvPosition;' +
+                '}';
+            var mesh = obj3d.scene.children[0];
+            var height =
+            mesh.position.set( 128, -64, 256 );
+            mesh.castShadow = true;
+            mesh.receiveShadow = false;
+            mesh.material = new THREE.MeshLambertMaterial( {
+                map: diffuseTex,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+            mesh.customDepthMaterial = new THREE.ShaderMaterial( {
+                uniforms: uniforms,
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader
+            } );
+            mesh.name=vegInfo.common;
+            editor.addObject( mesh );
+            editor.select( mesh );
+            // scaling
+            // apply arbitrary scaling factors to the user provided/default values for size
+            // need to find a way to use crown height in scaling the 3d model
+
+            var scaleX = mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x;
+            var scaleY = mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y;
+            var scaleZ = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
+            mesh.scale.set( vegParamDiameter.getValue()*10.0/scaleX, vegParamDiameter.getValue()*10.0/scaleY, vegParamHeight.getValue()*10.0/scaleZ );
+            editor.signals.sceneGraphChanged.dispatch();
+        }
+
         vegAddButton.onClick( function() {
-            var callback = function( obj3d ) {
-                var diffuseTex = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
-                diffuseTex.anisotropy = editor.config.getKey( 'maxAnisotropy' );
-                diffuseTex.minFilter = THREE.LinearFilter;
-                diffuseTex.magFilter = THREE.LinearFilter;
-                var uniforms = {
-                    texture: { 
-                        type: "t", 
-                        value: diffuseTex
-                    } 
-                };
-                var fragmentShader = '' +
-                    'uniform sampler2D texture;' +
-                    'varying vec2 vUV;' +
-                    'vec4 pack_depth( const in float depth ) {' +
-                        'const vec4 bit_shift = vec4( 256.0 * 256.0 * 256.0, 256.0 * 256.0, 256.0, 1.0 );' +
-                        'const vec4 bit_mask  = vec4( 0.0, 1.0 / 256.0, 1.0 / 256.0, 1.0 / 256.0 );' +
-                        'vec4 res = fract( depth * bit_shift );' +
-                        'res -= res.xxyz * bit_mask;' +
-                        'return res;' +
-                    '}' +
-                    'void main() {' +
-                        'vec4 pixel = texture2D( texture, vUV );' +
-                        'if ( pixel.a < 0.5 ) discard;' +
-                        'gl_FragData[ 0 ] = pack_depth( gl_FragCoord.z );' +
-                    '}';
-                var vertexShader = '' +
-                    'varying vec2 vUV;' +
-                    'void main() {' +
-                        'vUV = 0.75 * uv;' +
-                        'vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );' +
-                        'gl_Position = projectionMatrix * mvPosition;' +
-                    '}';
-                var mesh = obj3d.scene.children[0];
-                var height = 
-                mesh.position.set( 128, -64, 256 );
-                mesh.castShadow = true;
-                mesh.receiveShadow = false;
-                mesh.material = new THREE.MeshLambertMaterial( {
-                    map: diffuseTex,
-                    transparent: true,
-                    side: THREE.DoubleSide
-                } );
-                mesh.customDepthMaterial = new THREE.ShaderMaterial( { 
-                    uniforms: uniforms, 
-                    vertexShader: vertexShader, 
-                    fragmentShader: fragmentShader 
-                } );
-                mesh.name=vegInfo.common;
-                editor.addObject( mesh );
-                editor.select( mesh );
-                // scaling
-                // apply arbitrary scaling factors to the user provided/default values for size
-                // need to find a way to use crown height in scaling the 3d model
-               
-                var scaleX = mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x;
-                var scaleY = mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y;
-                var scaleZ = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
-                mesh.scale.set( vegParamDiameter.getValue()*10.0/scaleX, vegParamDiameter.getValue()*10.0/scaleY, vegParamHeight.getValue()*10.0/scaleZ );
-                editor.signals.sceneGraphChanged.dispatch();
-            }
-    
+
             var mloader = new THREE.ColladaLoader();
             mloader.load( 'media/vegetation/' + vegInfo.file + '/mesh.DAE', callback );
 

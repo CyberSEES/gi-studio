@@ -426,7 +426,8 @@ UI.FancySelect.prototype.setOptions = function ( options ) {
 
       // TODO generic functionality for each GI
       if (src.indexOf("betunigr") > -1) { 
-        selectedGI = "River Birch";
+        // selectedGI = "River Birch";
+        selectedGI = "betunigr";
       }
       if (src.indexOf("quergris") > -1) { 
         selectedGI = "Gray Oak";
@@ -937,7 +938,7 @@ UI.HorizontalRule.prototype = Object.create( UI.Element.prototype );
 
 // Button
 
-UI.Button = function ( value ) {
+UI.Button = function ( value, id ) {
 
 	UI.Element.call( this );
 
@@ -948,6 +949,9 @@ UI.Button = function ( value ) {
 
 	this.dom = dom;
 	this.dom.textContent = value;
+    if(typeof id !== "undefined") {
+        this.dom.id = id;
+    }
 
 	return this;
 
