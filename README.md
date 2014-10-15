@@ -3,8 +3,8 @@ Live site available at http://cybersees.github.io/gi-studio
 
 Notes:
 
-True camera lat long
-GSVPanoDepth
+- True camera lat long
+- GSVPanoDepth: https://github.com/proog128/GSVPanoDepth.js/tree/master
 
 Panorama geometry is created inside Editor.js. The panorama sphere uses default texture mapping defined by Three.SphereGeometry.
 
