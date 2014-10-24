@@ -45,8 +45,8 @@ Sidebar.Vegetation = function ( editor ) {
         file: 'betunigr',
         common: 'River Birch',
         latin: 'Betula Nigra',
-        height: 1.0,
-        crownHeight: 1.0,
+        height: 2.0,
+        crownHeight: 2.0,
         diameter: 1.0
     };
 
@@ -54,8 +54,8 @@ Sidebar.Vegetation = function ( editor ) {
         file: 'carestri',
         common: 'Tussock Sedge',
         latin: 'Carex Stricta',
-        height: 1.0,
-        crownHeight: 1.0,
+        height: 2.0,
+        crownHeight: 2.0,
         diameter: 1.0
     };
 
