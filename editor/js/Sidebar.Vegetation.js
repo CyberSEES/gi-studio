@@ -39,8 +39,54 @@ Sidebar.Vegetation = function ( editor ) {
     var vegParamHeight;
     var vegSelect = new UI.FancySelect().setId( 'veglist' );
 
+    var vegOptions = [];
+
+    var betunigr = {
+        file: 'betunigr',
+        common: 'River Birch',
+        latin: 'Betula Nigra',
+        height: 1.0,
+        crownHeight: 1.0,
+        diameter: 1.0
+    };
+
+    var carestri = {
+        file: 'carestri',
+        common: 'Tussock Sedge',
+        latin: 'Carex Stricta',
+        height: 1.0,
+        crownHeight: 1.0,
+        diameter: 1.0
+    };
+
+    var quergris = {
+        file: 'quergris',
+        common: 'Gray Oak',
+        latin: 'Quercus Grisea',
+        height: 1.0,
+        crownHeight: 1.0,
+        diameter: 1.0
+    };
+
+    vegSelect.vegData = [
+        betunigr,
+        carestri,
+        quergris
+    ];
+
+    vegSelect.vegData.forEach( function( vegObj ) {
+
+        vegOptions.push( 
+            '<div><img src="media/vegetation/' + vegObj.file + '/thumbnail.png" width="100%" /></div>' +
+            vegObj.common
+        );    
+
+    } );
+        
+    vegSelect.setOptions( vegOptions );
+
     vegSelect.onChange( function () {
-        var vegInfo = this.locationData[ this.selectedIndex ];
+        var vegInfo = this.vegData[ this.selectedIndex ];
         var vegAddButton = new UI.Button( 'Add to scene', 'addButton' );
         var callback = function( obj3d ) {
             var diffuseTex = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
@@ -90,7 +136,7 @@ Sidebar.Vegetation = function ( editor ) {
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader
             } );
-            mesh.name=vegInfo.common;
+            mesh.name = vegInfo.common;
             editor.addObject( mesh );
             editor.select( mesh );
             // scaling
@@ -141,24 +187,6 @@ Sidebar.Vegetation = function ( editor ) {
         vegParamContainer.add( vegAddButton );
     } );
 
-    signals.locationChanged.add( function( data ) {
-
-        vegSelect.locationData = data;
-
-        var options = [];
-
-        data.forEach( function( specie ) {
-
-            options.push( 
-                '<div><img src="media/vegetation/' + specie.file + '/thumbnail.png" width="100%" draggable="true"/></div>' +
-                specie.common
-            );    
-
-        } );
-        
-        vegSelect.setOptions( options );
-
-    } );
 
     vegContainer.add( vegSelect );
     vegContainer.add( new UI.Break() );
