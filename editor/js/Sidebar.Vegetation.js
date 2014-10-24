@@ -45,27 +45,27 @@ Sidebar.Vegetation = function ( editor ) {
         file: 'betunigr',
         common: 'River Birch',
         latin: 'Betula Nigra',
-        height: 1.0,
-        crownHeight: 1.0,
-        diameter: 1.0
+        height: 10.0,
+        crownHeight: 4.0,
+        diameter: 4.0
     };
 
     var carestri = {
         file: 'carestri',
         common: 'Tussock Sedge',
         latin: 'Carex Stricta',
-        height: 1.0,
-        crownHeight: 1.0,
-        diameter: 1.0
+        height: 4.0,
+        crownHeight: 4.0,
+        diameter: 4.0
     };
 
     var quergris = {
         file: 'quergris',
         common: 'Gray Oak',
         latin: 'Quercus Grisea',
-        height: 1.0,
-        crownHeight: 1.0,
-        diameter: 1.0
+        height: 10.0,
+        crownHeight: 4.0,
+        diameter: 4.0
     };
 
     vegSelect.vegData = [
