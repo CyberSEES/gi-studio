@@ -59,6 +59,7 @@ Sidebar.Vegetation = function ( editor ) {
         diameter: 1.0
     };
 
+    /*
     var quergris = {
         file: 'quergris',
         common: 'Gray Oak',
@@ -67,11 +68,11 @@ Sidebar.Vegetation = function ( editor ) {
         crownHeight: 1.0,
         diameter: 1.0
     };
+    */
 
     vegSelect.vegData = [
         betunigr,
-        carestri,
-        quergris
+        carestri
     ];
 
     vegSelect.vegData.forEach( function( vegObj ) {
