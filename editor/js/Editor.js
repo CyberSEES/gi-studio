@@ -134,6 +134,7 @@ Editor.prototype = {
     	loader.setZoom( 3 );
     	loader.load( new google.maps.LatLng( coords.lat, coords.lng ) );
 
+    	/*
 		$.ajax( {
             url: 'http://geoservice-freemancw.rhcloud.com/speciesforlatlng',   
             data: $.param( coords ),
@@ -147,6 +148,7 @@ Editor.prototype = {
             	console.log( errorThrown );
             }
 	    } );
+*/
 	},
 
 	//
