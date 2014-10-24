@@ -40,7 +40,7 @@ Sidebar.Vegetation = function ( editor ) {
     var vegSelect = new UI.FancySelect().setId( 'veglist' );
 
     vegSelect.onChange( function () {
-        var vegInfo = this.locationData[ this.selectedIndex ];
+        var vegInfo = this.vegData[ this.selectedIndex ];
         var vegAddButton = new UI.Button( 'Add to scene', 'addButton' );
         var callback = function( obj3d ) {
             var diffuseTex = THREE.ImageUtils.loadTexture( 'media/vegetation/' + vegInfo.file + '/diffuse.png' );
