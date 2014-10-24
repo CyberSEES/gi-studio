@@ -142,7 +142,7 @@ Sidebar.Vegetation = function ( editor ) {
     } );
 
     signals.locationChanged.add( function( data ) {
-
+/*
         vegSelect.locationData = data;
 
         var options = [];
@@ -157,8 +157,43 @@ Sidebar.Vegetation = function ( editor ) {
         } );
         
         vegSelect.setOptions( options );
+*/
+    } );
+
+    var vegOptions = [];
+
+    var betunigr = {
+        file: 'betunigr',
+        common: 'River Birch'
+    };
+
+    var carestri = {
+        file: 'carestri',
+        common: 'Grass'
+    };
+
+    var quergris = {
+        file: 'quergris',
+        common: 'oak'
+    };
+
+    vegSelect.vegData = [
+        betunigr,
+        carestri,
+        quergris
+    ];
+
+    vegSelect.vegData.forEach( function( vegObj ) {
+
+        vegOptions.push( 
+            '<div><img src="media/vegetation/' + vegObj.file + '/thumbnail.png" width="100%" /></div>' +
+            vegObj.common
+        );    
 
     } );
+        
+    vegSelect.setOptions( vegOptions );
+
 
     vegContainer.add( vegSelect );
     vegContainer.add( new UI.Break() );
