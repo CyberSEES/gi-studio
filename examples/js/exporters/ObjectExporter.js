@@ -263,6 +263,9 @@ THREE.ObjectExporter.prototype = {
 				data.material = parseMaterial( object.material );
 				data.receiveShadow = object.receiveShadow;
 				data.castShadow = object.castShadow;
+                if (object.file !== null){
+                    data.file = object.file;
+                }
 
 			} else if ( object instanceof THREE.Sprite ) {
 

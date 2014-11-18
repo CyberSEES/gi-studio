@@ -90,7 +90,8 @@ Sidebar.Vegetation = function ( editor ) {
                 vertexShader: vertexShader,
                 fragmentShader: fragmentShader
             } );
-            mesh.name=vegInfo.common;
+            mesh.name = vegInfo.common;
+            mesh.file = vegInfo.file;
             editor.addObject( mesh );
             editor.select( mesh );
             // scaling
@@ -175,7 +176,7 @@ Sidebar.Vegetation = function ( editor ) {
 
         var gndInfo = this.gndData[ this.selectedIndex ];
 
-        var gndAddButton = new UI.Button( 'Add to scene' );
+        var gndAddButton = new UI.Button( 'Add to scene', 'addButton');
         gndAddButton.onClick( function() {
 
             var callback = function( obj3d ) {
@@ -220,10 +221,12 @@ Sidebar.Vegetation = function ( editor ) {
                 mesh.position.set( 128, -64, 256 );
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
+
                 mesh.material = new THREE.MeshLambertMaterial( {
                     map: diffuseTex,
                     transparent: true
                 } );
+
                 /*
                 mesh.customDepthMaterial = new THREE.ShaderMaterial( { 
                     uniforms: uniforms, 
@@ -231,7 +234,8 @@ Sidebar.Vegetation = function ( editor ) {
                     fragmentShader: fragmentShader 
                 } );
                 */
-                 mesh.name=gndInfo.common;
+                mesh.name = gndInfo.common;
+                mesh.file = gndInfo.file;
                 editor.addObject( mesh );
                 editor.select( mesh );
             }

@@ -112,9 +112,40 @@
 				editor.storage.get( function ( state ) {
 
 					if ( state !== undefined ) {
+                        // avoid messing with three.js, for resetting maps
+                        var index;
+                        var meshList = [];
+                        for (index = 0; index < state.object.children.length; index++){
+                            var obj = state.object.children[index];
+                            if (obj.type === "Mesh") {
+                                if (obj.name !== "ground") {
+                                    var tuple = {uuid: obj.uuid, file: obj.file};
+                                    meshList.push(tuple);
+                                }
+                            }
+                        }
 
 						var loader = new THREE.ObjectLoader();
 						var scene = loader.parse( state );
+
+                        for (var index = 0; index < scene.children.length; index++){
+                            obj = scene.children[index];
+                            for (var j = 0; j < meshList.length; j++){
+                                var tup = meshList[j];
+                                if(obj.uuid === tup.uuid){
+                                    obj.file = tup.file;
+
+                                    // reset mesh's map based on its file
+                                    // TODO choose wheter to pull from media/ground, or elsewhere
+                                    var diffuseTex = THREE.ImageUtils.loadTexture( 'media/allMesh/' + meshList[j].file + '/diffuse.png' );
+                                    diffuseTex.anisotropy = editor.config.getKey( 'maxAnisotropy' );
+                                    diffuseTex.minFilter = THREE.LinearFilter;
+                                    diffuseTex.magFilter = THREE.LinearFilter;
+
+                                    obj.material.map = diffuseTex;
+                                }
+                            }
+                        }
 
 						editor.setScene( scene );
 
