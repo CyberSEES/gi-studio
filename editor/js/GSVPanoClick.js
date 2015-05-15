@@ -96,19 +96,104 @@ GSVPANO.PanoLoader = function (parameters) {
 	};
 
 	this.composeFromTile = function (x, y, texture) {
-	
+	        var w = levelsW[ _zoom ],
+		h = levelsH[ _zoom ];
+		var flag=false;
+		if (x == w - 1 && y == h - 1 )
+			flag = true;
 		x *= 512;
 		y *= 512;
+		
 		var px = Math.floor( x / maxW ), py = Math.floor( y / maxH );
 
 		x -= px * maxW;
 		y -= py * maxH;
 
 		_ctx[ py * _wc + px ].drawImage(texture, 0, 0, texture.width, texture.height, x, y, 512, 512 );
+		if(flag)
+			this.OilPntEff(_ctx[ py * _wc + px ], _canvas[ py * _wc + px], 3, 20);
 		this.progress();
 		
 	}; 
 
+        this.OilPntEff = function(curr_ctx, canvas, radius, intensity)
+	{
+    var width = canvas.width,
+        height = canvas.height,
+        imgData = curr_ctx.getImageData(0, 0, width, height),
+        pixData = imgData.data,
+        pixelIntensityCount = [];
+
+    var destImageData = curr_ctx.createImageData(width, height),
+        destPixData = destImageData.data,
+        intensityLUT = [],
+        rgbLUT = [];
+
+    for (var y = 0; y < height; y++) {
+        intensityLUT[y] = [];
+        rgbLUT[y] = [];
+        for (var x = 0; x < width; x++) {
+            var idx = (y * width + x) * 4,
+                r = pixData[idx],
+                g = pixData[idx + 1],
+                b = pixData[idx + 2],
+                avg = (r + g + b) / 3;
+
+            intensityLUT[y][x] = Math.round((avg * intensity) / 255);
+            rgbLUT[y][x] = {
+                r: r,
+                g: g,
+                b: b
+            };
+        }
+    }
+
+
+    for (y = 0; y < height; y++) {
+        for (x = 0; x < width; x++) {
+
+            pixelIntensityCount = [];
+
+            for (var yy = -radius; yy <= radius; yy++) {
+                for (var xx = -radius; xx <= radius; xx++) {
+                    if (y + yy > 0 && y + yy < height && x + xx > 0 && x + xx < width) {
+                        var intensityVal = intensityLUT[y + yy][x + xx];
+
+                        if (!pixelIntensityCount[intensityVal]) {
+                            pixelIntensityCount[intensityVal] = {
+                                val: 1,
+                                r: rgbLUT[y + yy][x + xx].r,
+                                g: rgbLUT[y + yy][x + xx].g,
+                                b: rgbLUT[y + yy][x + xx].b
+                            }
+                        } else {
+                            pixelIntensityCount[intensityVal].val++;
+                            pixelIntensityCount[intensityVal].r += rgbLUT[y + yy][x + xx].r;
+                            pixelIntensityCount[intensityVal].g += rgbLUT[y + yy][x + xx].g;
+                            pixelIntensityCount[intensityVal].b += rgbLUT[y + yy][x + xx].b;
+                        }
+                    }
+                }
+            }
+
+            pixelIntensityCount.sort(function (a, b) {
+                return b.val - a.val;
+            });
+
+            var curMax = pixelIntensityCount[0].val,
+                dIdx = (y * width + x) * 4;
+
+            destPixData[dIdx] = ~~ (pixelIntensityCount[0].r / curMax);
+            destPixData[dIdx + 1] = ~~ (pixelIntensityCount[0].g / curMax);
+            destPixData[dIdx + 2] = ~~ (pixelIntensityCount[0].b / curMax);
+            destPixData[dIdx + 3] = 255;
+        }
+    }
+
+    curr_ctx.putImageData(destImageData, 0, 0);
+	var junk = curr_ctx.getImageData(0, 0, width, height)
+	}
+	
 	this.progress = function() {
 
 		_count++;
